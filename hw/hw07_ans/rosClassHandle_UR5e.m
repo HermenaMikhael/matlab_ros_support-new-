@@ -81,8 +81,8 @@ classdef rosClassHandle_UR5e
             r.tf_listening_time       = 10;
             
             % Vision
-            r.rgb_sub                 = rossubscriber('/camera/rgb/image_raw','DataFormat','struct');
-            r.pt_cloud_sub            = rossubscriber('/camera/depth/points','DataFormat','struct');
+            % r.rgb_sub                 = rossubscriber('/camera/rgb/image_raw','DataFormat','struct');
+            % r.pt_cloud_sub            = rossubscriber('/camera/depth/points','DataFormat','struct');
             
             % Yolo Neural Network
             % r.general_detector        = load("./vision_tutorials/detectors/detector_gral_sim.mat");   

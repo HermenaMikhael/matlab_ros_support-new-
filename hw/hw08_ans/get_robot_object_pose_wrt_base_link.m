@@ -22,8 +22,7 @@ function [mat_R_T_G, mat_R_T_M] = get_robot_object_pose_wrt_base_link(model_name
     %% Initialize variables     
     frameAdjustmentFlag = optns{'frameAdjustmentFlag'};     % Indicates matlab's base_link does not match ros. Need adjustment.
     toolAdjustmentFlag  = optns{'toolAdjustmentFlag'};      % Indicates we have fingers but have not adjusted IKs for it.    
-    z_offset = optns{'z_offset'};
-    % y_offset = optns{'y_offset'};
+
     %tf_listening_time   = r.tf_listening_time;             % Time (secs) to listen for transformation in ros
     
     % No get_robot_gripper_pose_flag provided
@@ -47,7 +46,7 @@ function [mat_R_T_G, mat_R_T_M] = get_robot_object_pose_wrt_base_link(model_name
     mat_R_T_M = inv(mat_W_T_R)*mat_W_T_M; %#ok<MINV>
 
     %z_offset = 0.052; %0.052; % Can height is 5.2cm
-    mat_R_T_M(3,4) = mat_R_T_M(3,4) + z_offset; % Offset along +z_base_link to simulate knowing height of top of can.
+    % mat_R_T_M(3,4) = mat_R_T_M(3,4); % Offset along +z_base_link to simulate knowing height of top of can. best done in pick() with label customization
     
     
     %% 3. Modify orientation of robot pose to be a top-down pick (see tool0 vs base_link) w fingers aligned with matlab's y_world -axis
