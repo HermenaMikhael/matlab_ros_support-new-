@@ -1,0 +1,23 @@
+function models = getModels(optns)
+%-------------------------------------------------------------------------- 
+% getModels
+% This method will create a service client that talks to Gazebo's
+% get_world_properties to get all model names.
+%
+% Inputs: (dict) optns
+% Output: (gazebo_msgs/GetWorldPropertiesResponse cell): models
+%--------------------------------------------------------------------------
+    % TODO: 01 Get robot handle from dict optns
+    r = optns("rHandle");
+    
+    % TODO: 02 Create model_client_msg 
+    model_client_msg = rosmessage(r{1}.get_models_client);
+    
+    % TODO: 03 Call client and save models
+    try
+         models = call(r{1}.get_models_client, model_client_msg);
+    catch
+        disp('Error - model properties could not be found')
+    end
+
+end
