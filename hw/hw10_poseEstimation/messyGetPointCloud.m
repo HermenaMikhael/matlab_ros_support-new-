@@ -23,7 +23,7 @@ function [ptCloud_tform, ptCloud, base_to_cam_pose, cam_to_base_pose] = messyGet
     
     % Compute the ROS/Gazebo transform from base_link to camera_depth_link
     waitForTransform(tftree, base, end_effector);
-    base_to_camera = getTransform(tftree, base, end_effector, rostime('now'),'Timeout', r.tf_listening_time);
+    base_to_camera = getTransform(tftree, base, end_effector);
 
     %% base_to_camera 4x4 transform matrix
     % Using base to camera transformation gotten from gazebo when the point

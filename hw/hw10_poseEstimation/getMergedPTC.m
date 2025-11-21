@@ -86,7 +86,7 @@ function [ptCloud_pic, nonPlane_pic, ptCloud_world, base_to_cam_pose, cam_to_bas
     for iter = 1:length(locations)
 
         % a) Move arm to ith location: 
-
+        
         % These gripper motions are planar (no gripper rotation)
         if iter < 5
             displaceG = displace_gripper(mat_R_T_G,optns,locations{iter},0.07);
@@ -100,14 +100,15 @@ function [ptCloud_pic, nonPlane_pic, ptCloud_world, base_to_cam_pose, cam_to_bas
         pause(5);
         [ptCloud_recent, ~, ~, ~] = messyGetPointCloud(optns);
 
-        % c) TODO: Merge ptCloud_world and ptCloud_recent (world+above) with a grid step of 0.001 and output to ptCloud_world
-        ptCloud_world = %complete code here%
+       % c) TODO: Merge ptCloud_world and ptCloud_recent (world+above) with a grid step of 0.001 and output to ptCloud_world
+        ptCloud_world = pcmerge(ptCloud_world, ptCloud_recent, 0.001);%complete code here%
 
         % d) Find relevant points from merged pt cloud
-        indices = findPointsInROI(ptCloud_world,table_roi);
+        indices = findPointsInROI(ptCloud_world,table_roi); 
 
         % TODO: select indecs for ptCloud_world and output ptCloud_world
-        ptCloud_world = %complete code here%
+        ptCloud_world = select(ptCloud_world,indices);%complete code here%
+
         pause(5);
 
         %% e) Visualize
@@ -136,8 +137,8 @@ function [ptCloud_pic, nonPlane_pic, ptCloud_world, base_to_cam_pose, cam_to_bas
     normalVector = [0,0,1];
     maxPlaneTilt = 5;
 
-    % TODO: Fit the horizontal plane given ptCloud_pic and the three arguments above.
-    [param, planeIdx, nonPlaneIdx] = %complete code here%
+   % TODO: Fit the horizontal plane given ptCloud_pic and the three arguments above.
+    [param, planeIdx, nonPlaneIdx] = pcfitplane(ptCloud_pic, planeThickness, normalVector, maxPlaneTilt); %complete code here%
 
     % Create indexed entities
     plane_pic = select(ptCloud_pic, planeIdx);
@@ -149,8 +150,8 @@ function [ptCloud_pic, nonPlane_pic, ptCloud_world, base_to_cam_pose, cam_to_bas
     if optns{'debug'}
         figure(2),pcshow(plane_pic,'ViewPlane','XY');axis on;
         
-        % TODO: show nonPlane point cloude with an XY View of the plane and axis on
-        figure(3),
+       % TODO: show nonPlane point cloude with an XY View of the plane and axis on
+        figure(3),pcshow(nonPlane_pic,'ViewPlane','XY');axis on;
         
         % Labels
         xlabel("X"); ylabel("Y"); zlabel("Z"); title("Cropped merged point cloud wrt base link");

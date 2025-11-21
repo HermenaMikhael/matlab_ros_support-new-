@@ -6,8 +6,8 @@
     pause(2);       
     
     %% Set IP address for master and node:
-    masterHostIP = "192.168.56.101";
-    nodeHostIP = "192.168.56.1";
+    masterHostIP = "10.51.79.84";
+    nodeHostIP = "10.51.80.236";
     rosinit(masterHostIP, 11311, "NodeHost",nodeHostIP);
     
     %% 01 ROS Class handle

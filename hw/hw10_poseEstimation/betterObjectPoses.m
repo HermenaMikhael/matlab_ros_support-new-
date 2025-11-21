@@ -101,7 +101,8 @@ function [xyz,theta,ptCloud_vec,scene_pca_vec] = betterObjectPoses(ptCloud_tform
         end
     
         % ---------------------------------------------------------------------
-        % Convert image ROI -> camera-frame XY ROI (Z uses full scene span)    bbox_roi_xmin = pc_xmin + (left_column*xpixel_base_scale);
+        % Convert image ROI -> camera-frame XY ROI (Z uses full scene span)    
+        bbox_roi_xmin = pc_xmin + (left_column*xpixel_base_scale);
         % ---------------------------------------------------------------------    
         bbox_roi_xmax = pc_xmin + (right_column*xpixel_base_scale);
         
@@ -171,7 +172,7 @@ function [xyz,theta,ptCloud_vec,scene_pca_vec] = betterObjectPoses(ptCloud_tform
         % Optional: density-based axis alignment to reduce random sign flips
         % Using the object center rather than centroid to stabilize on partial views
         %----------------------------------------------------------------------
-        %centroid = mean(ptScene.Location);
+        centroid = mean(ptScene.Location);
         %coeff = align2ndAxis(ptScene, coeff, centroid);%align axis by using point cloud density
         %coeff = align3rdAxis(ptScene, coeff, centroid);
         %----------------------------------------------------------------------
@@ -187,7 +188,8 @@ function [xyz,theta,ptCloud_vec,scene_pca_vec] = betterObjectPoses(ptCloud_tform
         scene_pca.coeff = coeff;
         scene_pca.score = score;
         scene_pca.latent = latent;
-        scene_pca.centroid = center;            % scene_pca.centroid = centroid;
+        scene_pca.centroid = center;            
+        scene_pca.centroid = centroid;
         scene_pca.eulZYX = rotm2eul(coeff);
         scene_pca.UVW = [U,V,W];
         scene_pca_vec{idx} = scene_pca;
