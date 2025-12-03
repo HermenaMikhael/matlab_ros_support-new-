@@ -8,7 +8,7 @@ pause(2);
 
 %% Set IP address for master and node:
 masterHostIP = "10.51.79.84";
-nodeHostIP = "10.51.75.241";
+nodeHostIP = "10.51.79.235";
 rosinit(masterHostIP, 11311, "NodeHost",nodeHostIP);
 
 %% ROS Class handle
@@ -49,7 +49,7 @@ disp('Getting object goal pose(s)...')
 models = getModels(optns);
 
 % Number of models to pick (you can hard code or randomize)
-n = [1, 4, 5, 6, 7, 8, 9, 10] % n = randi([3 25]);
+n = [1, 5, 12, 17, 21, 24,  6, 3 , 0, -1,-2, -3 ] % n = randi([3 25]);
 
 % Bin locations
 greenBin = [-0.4, -0.45, 0.25, -pi/2, -pi 0];

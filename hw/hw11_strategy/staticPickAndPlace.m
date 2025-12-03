@@ -11,13 +11,13 @@ function staticPickAndPlace(optns)
                  0  0  -1 -0.0665;...
                  0  0  0   1];
     yBottle1 = yBottle1*trotz(pi/2);
-    
+
     % gCan1 is standing on top of carboard box
     gCan1    = [ 0  1  0  -0.3628;...
                  1  0  0  -0.0071;...
                  0  0 -1   0.067;...
                  0  0  0   1];
-    
+
     % rBottle1 is laying down
     % need to turn fingers
     rBottle1 = [ 0  1  0  -0.6193;...
@@ -25,19 +25,19 @@ function staticPickAndPlace(optns)
                  0  0 -1   -0.0663;...
                  0  0  0   1];
     rBottle1 = rBottle1*trotz(pi/2);
-    
+
     % rCan1 is standing up
     rCan1    = [ 0  1  0  -0.5024;...
                  1  0  0   0.3953;...
                  0  0 -1   -0.0419;...
                  0  0  0   1];
-    
+
     % bBottle1 is standing
     bBottle1 = [ 0  1  0   0.4602;...
                  1  0  0  -0.0702;...
                  0  0 -1   -0.0015;...
                  0  0  0   1];
-    
+
     % rCan2 is standing on gCan3
     rCan2    = [ 0  1  0   0.66;...
                  1  0  0   0.0183;...
@@ -48,7 +48,7 @@ function staticPickAndPlace(optns)
                  1  0  0   0.0192;...
                  0  0 -1   -0.0416;...
                  0  0  0   1];
-    
+
     % easyObjects = { %Zone1
     %                "can" gCan1;...
     %                "bottle" yBottle1;...
@@ -58,36 +58,36 @@ function staticPickAndPlace(optns)
     %                "bottle" bBottle1;...
     %                "can" rCan2;...
     %                "can" gCan3};
-    
+
     % move to Zone 1 config
-    StartZone = [0.6482   -0.2317    1.4450   -1.2133    0.0003   -0.9226]; % Should not be set manually like this, but via a variable
+     StartZone = [0.6482   -0.2317    1.4450   -1.2133    0.0003   -0.9226]; % Should not be set manually like this, but via a variable
     moveToQ("Custom",optns,StartZone); 
     pause(5);
-        
+
 % gCan1---------------------------------------------------------------
-        
+
     % Hover over
-    hover = lift(gCan1, 0.3);
+    hover = lift(gCan1, 0.4);
     moveTo(hover, optns);
-    
+
     % Pick
     gCan1(3,4) = gCan1(3,4) + 0.18;
     moveTo(gCan1, optns);
     pause(3);
     doGrip("pick", optns, 0.24);
     pause(5);
-    
+
     % Place
     moveTo(hover, optns);
     moveToQ("Custom", optns, [5/8*pi 0 pi/2.3 -pi/2.3 0 0]); % Green
     doGrip("place", optns);
     pause(7);
-  
+
     % Return to zone pose
     moveToQ("Custom",optns,StartZone); 
 
 % yBottle1------------------------------------------------------------        
-    
+
     % Hover
     hover = lift(yBottle1, 0.3);
     moveTo(hover, optns);
@@ -98,50 +98,50 @@ function staticPickAndPlace(optns)
     pause(3);
     doGrip("pick", optns, 0.21);
     pause(5);
-    
+
     % Return to custom pose
     moveTo(hover, optns);
     moveToQ("Custom", optns, [0 0 pi/2 -pi/2 0 0]); % pass through home position
     pause(2);
-    
+
     % Place
     moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
     doGrip("place", optns);
     pause(7);
-  
+
     % Return to zone pose
     moveToQ("Custom",optns,StartZone);         
-% rCan1---------------------------------------------------------------
-    
-    % Hover
-    hover = lift(rCan1, 0.3);        
-    moveTo(hover, optns);
-
-    % Pick
-    rCan1(3,4) = rCan1(3,4) + 0.18;
-    moveTo(rCan1, optns);
-    pause(3);
-    doGrip("pick", optns, 0.24);
-    pause(5);
-
-    % Place
-    moveTo(hover, optns);
-    moveToQ("Custom", optns, [5/8*pi 0 pi/2.3 -pi/2.3 0 0]); % Green
-    doGrip("place", optns);
-    pause(7);
-
-  
-    % Return to zone pose
-    moveToQ("Custom",optns,StartZone); 
+% % % rCan1---------------------------------------------------------------
+% % 
+% %     % Hover
+%      hover = lift(rCan1, 0.3);        
+%      moveTo(hover, optns);
+% 
+%      % Pick
+%      rCan1(3,4) = rCan1(3,4) + 0.18;
+%      moveTo(rCan1, optns);
+%      pause(3);
+%      doGrip("pick", optns, 0.25);
+%      pause(5);
+% 
+%      % Place
+%      moveTo(hover, optns);
+%      moveToQ("Custom", optns, [5/8*pi 0 pi/2.3 -pi/2.3 0 0]); % Green
+%      doGrip("place", optns);
+%      pause(7);
+% 
+% 
+%      % Return to zone pose
+%      moveToQ("Custom",optns,StartZone); 
 
 % rBottle1------------------------------------------------------------
 
     % Hover
     hover = lift(rBottle1, 0.3);
     moveTo(hover, optns);
-    
+
     % Pick
-    rBottle1(3,4) = rBottle1(3,4) + 0.14;
+    rBottle1(3,4) = rBottle1(3,4) + 0.15;
     moveTo(rBottle1, optns);
     pause(3);
     doGrip("pick", optns, 0.21);
@@ -163,16 +163,16 @@ function staticPickAndPlace(optns)
     pause(7);
 
 % rCan2---------------------------------------------------------------
-
+    moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
     % Hover
-    hover = lift(rCan2, 0.3);
+    hover = lift(rCan2, 0.4);
     moveTo(hover, optns);
 
     % Pick
     rCan2(3,4) = rCan2(3,4) + 0.18;
     moveTo(rCan2, optns);
     pause(3);
-    doGrip("pick", optns, 0.24);
+    doGrip("pick", optns, 0.25);
     pause(5);
 
     % Place w/ custom path
@@ -190,7 +190,7 @@ function staticPickAndPlace(optns)
     moveToQ("Custom",optns,StartZone);
 
 % gCan3----------------------------------------------------------------
-    
+ moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
     % Hover
     hover = lift(gCan3, 0.3);
     moveTo(hover, optns);
@@ -217,16 +217,16 @@ function staticPickAndPlace(optns)
     moveToQ("Custom",optns,StartZone);
 
 % bBottle1------------------------------------------------------------
-
+ moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
     % Hover
-    hover = lift(bBottle1, 0.3);
+    hover = lift(bBottle1, 0.5);
     moveTo(hover, optns);
 
     % Pick
     bBottle1(3,4) = bBottle1(3,4) + 0.24;
     moveTo(bBottle1, optns);
     pause(3);
-    doGrip("pick", optns, 0.521);
+    doGrip("pick", optns, 0.52);
     pause(3);
 
     % Place 
@@ -241,5 +241,129 @@ function staticPickAndPlace(optns)
     moveToQ("Custom", optns, [0 0 pi/2 -pi/2 0 0]); % pass through home position
     pause(2);
 
-end
 
+transforms = load('tempData.mat');
+
+
+% rCan1
+
+mat_R_T_M = transforms.transformations(:,:, 2);
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.105;
+hover = lift(mat_R_T_M, 0.5);
+     moveTo(hover, optns);
+
+    moveTo(mat_R_T_M, optns);
+    pause(6);
+    doGrip("pick", optns, 0.24);
+    pause(3);
+
+
+moveToQ("Custom", optns, [5/8*pi 0 pi/2.3 -pi/2.3 0 0]); % green
+doGrip("place", optns);
+pause(2);
+
+
+marker
+moveToQ("Custom",optns,StartZone);
+mat_R_T_M = transforms.transformations(:,:, 5);
+hover = lift(mat_R_T_M, 0.5);
+     moveTo(hover, optns);
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.11;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.7);
+    pause(3);
+hover = lift(mat_R_T_M, 0.5);
+moveTo(hover, optns);
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+doGrip("place", optns);
+pause(2);
+
+
+
+spam
+
+mat_R_T_M = transforms.transformations(:,:, 6);
+mat_R_T_M = mat_R_T_M * trotz(90, 'degree');
+
+
+  moveToQ("Custom",optns,StartZone);
+
+hover = lift(mat_R_T_M, 0.3);
+     moveTo(hover, optns);
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.1;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.63);
+    pause(3);
+
+
+
+
+%  Can have optional starting opse for ctraj like: ret = pick(strategy, mat_R_T_M,mat_R_T_G);
+ moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+ doGrip("place", optns);
+ pause(2);
+% 
+
+
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]);
+mat_R_T_M = transforms.transformations(:,:, 8+1);
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.06;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.63);
+    pause(3);
+
+% Can have optional starting opse for ctraj like: ret = pick(strategy, mat_R_T_M,mat_R_T_G);
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+doGrip("place", optns);
+pause(2);
+
+
+
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]);
+mat_R_T_M = transforms.transformations(:,:, 8+2);
+mat_R_T_M = mat_R_T_M * trotz(90, 'degree');
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.06;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.63);
+    pause(3);
+
+% Can have optional starting opse for ctraj like: ret = pick(strategy, mat_R_T_M,mat_R_T_G);
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+doGrip("place", optns);
+pause(2);
+
+
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]);
+mat_R_T_M = transforms.transformations(:,:, 8+3);
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.063;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.63);
+    pause(3);
+
+% Can have optional starting opse for ctraj like: ret = pick(strategy, mat_R_T_M,mat_R_T_G);
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+doGrip("place", optns);
+pause(2);
+
+
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]);
+mat_R_T_M = transforms.transformations(:,:, 8+4);
+mat_R_T_M = mat_R_T_M * trotz(90, 'degree');
+mat_R_T_M(3,4)=mat_R_T_M(3,4)+.06;
+    moveTo(mat_R_T_M, optns);
+    pause(3);
+    doGrip("pick", optns, 0.63);
+    pause(3);
+
+% Can have optional starting opse for ctraj like: ret = pick(strategy, mat_R_T_M,mat_R_T_G);
+moveToQ("Custom", optns, [-0.8*pi 0 pi/2.3 -pi/2.3 0 0]); % Blue
+doGrip("place", optns);
+pause(2);
+
+
+end

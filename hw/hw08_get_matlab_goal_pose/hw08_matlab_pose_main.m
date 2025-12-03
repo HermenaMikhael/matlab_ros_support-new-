@@ -7,8 +7,8 @@ rosshutdown;
 pause(2);       
 
 %% Set IP address for master and node:
-masterHostIP = % **Complete Code** 
-nodeHostIP = % **Complete Code** 
+ masterHostIP = "10.51.79.84";
+ nodeHostIP = "10.51.67.30";
 rosinit(masterHostIP, 11311, "NodeHost",nodeHostIP);
 
 %% ROS Class handle
@@ -46,19 +46,23 @@ n = 7; % Aiming for a fixed and simple object in the middle of the workspace.
 % Green Bin Location - Extracted empirically
 greenBin = [-0.4, -0.45, 0.25, -pi/2, -pi 0];
 
+n = [1, 5, 12, 17, 21, 24,  6, 3 , 0, -1,-2, -3 ]
 %% 03 Get Poses in Matlab format: (i) robot_base-to-model   (mat_R_T_M)
 %%                                (ii)robot_base-to-gripper (mat_R_T_G)
-
+for i=1:12
 % Get Model Names
-model_name = models.ModelNames{23+n};
+model_name = models.ModelNames{23+n(i)};
 
 % Get Model pose
 fprintf('Picking up model: %s \n',model_name);
 get_robot_gripper_pose_flag = 0; % 0 - no model of fingers available
 [mat_R_T_G, mat_R_T_M] = get_robot_object_pose_wrt_base_link(model_name,get_robot_gripper_pose_flag,optns);
+transformations(:,:, i)= mat_R_T_M;
+modelstore(i) = string(model_name);
 
-display("Base to tip Transform: ");
-disp(mat_R_T_G);
+%display("Base to tip Transform: ");
+%disp(mat_R_T_G);
 
 display("Base to Object Transform: ");
 disp(mat_R_T_M);
+end

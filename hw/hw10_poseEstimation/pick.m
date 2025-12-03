@@ -1,62 +1,133 @@
-function grip_result = pick(strategy,objectData,optns)
+function grip_result = pick(strategy, objectData, optns)
     %----------------------------------------------------------------------
-    % pick 
-    % Top-level function to executed a complete pick. 
-    % 
-    % 01 Calls moveTo to move to desired pose
-    % 02 Calls doGrip to execute a grip
+    % pick - Enhanced version with support for all object types
     %
-    % Inputs
-    % mat_R_T_M [4x4]: object pose wrt to base_link
-    % mat_R_T_G  [4x4]: gripper pose wrt to base_link used as starting point in ctraj (optional)    
-    % optns (dict): options 
+    % Handles: bottles (v/h), cans (v/h), markers, spam, pouches
+    %
+    % Inputs:
+    %   strategy    - 'topdown' or 'direct'
+    %   objectData  - Either 4x4 matrix or cell array {label, pose, ptCloud}
+    %   optns       - Options dictionary
     %
     % Outputs:
-    % ret (bool): 0 indicates success, other failure.
+    %   grip_result - Error code (0 = success)
     %----------------------------------------------------------------------
      
-    % Check type of objectData. If matrix, assign directly; otherwise
-    % extract.
+    % Extract label and pose from objectData
     if isequal(size(objectData), [4, 4]) && isnumeric(objectData)
         mat_R_T_M = objectData;
-        label = "can";
-    
-    % Extract pose and label from object
+        label = "can";  % default
     else
-        label = objectData(1,1); 
+        label = objectData(1,1);
         label = label{1};
-        mat_R_T_M = objectData(1,2); 
+        mat_R_T_M = objectData(1,2);
         mat_R_T_M = mat_R_T_M{1};
     end
 
-    %% 1) Determine z offset and grip distance required
-    %   z offset includes offset for both the base and the gripper
-        if strcmp(string(label), "pouch")
-            zOffset = 0.145;
-            doGripValue = 0.62;
-        elseif strcmp(string(label), "can")
-            zOffset = 0.18;
-            doGripValue = 0.24;
-        elseif strcmp(string(label), "bottle")
+    %% 1) Determine z offset and grip distance based on object type
+    switch string(label)
+        % Vertical Bottles
+        case "vBottle"
             zOffset = 0.12;
             doGripValue = 0.36;
-        end
+            hoverHeight = 0.25;
+       
+        % Horizontal Bottles (lying down)
+        case "hBottle"
+            zOffset = 0.08;
+            doGripValue = 0.21;
+            hoverHeight = 0.20;
+       
+        % Vertical Cans
+        case {"vCan", "can"}
+            zOffset = 0.18;
+            doGripValue = 0.24;
+            hoverHeight = 0.25;
+       
+        % Horizontal Cans
+        case "hCan"
+            zOffset = 0.10;
+            doGripValue = 0.24;
+            hoverHeight = 0.20;
+       
+        % Markers
+        case "marker"
+            zOffset = 0.12;
+            doGripValue = 0.30;
+            hoverHeight = 0.22;
+       
+        % Spam
+        case "spam"
+            zOffset = 0.15;
+            doGripValue = 0.35;
+            hoverHeight = 0.25;
+       
+        % Pouches
+        case {"pouch", "pouchR", "pouchG", "pouchB", "pouchP"}
+            zOffset = 0.145;
+            doGripValue = 0.62;
+            hoverHeight = 0.25;
+       
+        % Bottle
+        case "bottle"
+            zOffset = 0.12;
+            doGripValue = 0.36;
+            hoverHeight = 0.25;
+       
+        % Default
+        otherwise
+            zOffset = 0.15;
+            doGripValue = 0.30;
+            hoverHeight = 0.25;
+    end
 
-    %% 2) Move to desired location
-        % Account for base offset + Hover over object
-        if strcmp(strategy,'topdown')
-            over_R_T_M1 = lift(mat_R_T_M,zOffset + 0.2);
-            MoveToOb = moveTo(over_R_T_M1, optns);
-            disp(over_R_T_M1);
-
-            over_R_T_M = lift(mat_R_T_M,zOffset);
-            MoveToOb = moveTo(over_R_T_M, optns);
-            disp(over_R_T_M);
-        
-        elseif strcmpi(strategy,'direct')
-            traj_result = moveTo(mat_R_T_M,optns);
+    %% 2) Execute pick strategy
+    if strcmp(strategy, 'topdown')
+        % Step 1: Move to high hover position
+        fprintf('Hovering %.2fm above %s...\n', hoverHeight, label);
+        over_R_T_M_high = lift(mat_R_T_M, zOffset + hoverHeight);
+        result1 = moveTo(over_R_T_M_high, optns);
+       
+        if result1 ~= 0
+            warning('Failed to reach high hover position');
+            grip_result = result1;
+            return;
         end
-        % Grip object
-        [grip_result,grip_state] = doGrip('pick',optns,doGripValue); 
-        grip_result = grip_result.ErrorCode;
+       
+        % Step 2: Move to final pick position
+        fprintf('Descending to pick %s...\n', label);
+        over_R_T_M = lift(mat_R_T_M, zOffset);
+        result2 = moveTo(over_R_T_M, optns);
+       
+        if result2 ~= 0
+            warning('Failed to reach pick position');
+            grip_result = result2;
+            return;
+        end
+       
+        % Step 3: Close gripper
+        pause(1);
+       
+    elseif strcmpi(strategy, 'direct')
+        result = moveTo(mat_R_T_M, optns);
+        if result ~= 0
+            grip_result = result;
+            return;
+        end
+    end
+   
+    %% 3) Execute grip
+    fprintf('Gripping %s with value %.2f...\n', label, doGripValue);
+    [grip_result, ~] = doGrip('pick', optns, doGripValue);
+    grip_result = grip_result.ErrorCode;
+   
+    % Add delay for grip to stabilize
+    pause(2);
+   
+    % Verify grip (optional - could check gripper feedback)
+    if grip_result == 0
+        fprintf('Successfully picked %s\n', label);
+    else
+        warning('Grip may have failed for %s', label);
+    end
 end

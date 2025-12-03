@@ -38,9 +38,8 @@ classdef rosClassHandle_UR5e
 
         % Yolo NN
         basePath;
-        detPath1;
-        detPath2;
-        detectors;
+        detPath;
+        general_detector;
 
     end
 
@@ -89,9 +88,8 @@ classdef rosClassHandle_UR5e
             
             % Yolo Neural Network
             r.basePath                = "/Users/herme/OneDrive/Documents/GitHub/matlab_ros_support-new-/tutorials"
-            r.detPath1                 = '/vision/detectors/detector_gral_sim.mat'
-            r.detPath2                 = '/vision/detectors/detector_pouch_sim.mat'
-            r.detectors        = {load( fullfile(r.basePath,r.detPath1)), load( fullfile(r.basePath,r.detPath2)) };   
+            r.detPath                 = '/vision/detectors/detector_gral_sim.mat'
+            r.detectors        = {load( fullfile(r.basePath,r.detPath), );   
         end
 
     end

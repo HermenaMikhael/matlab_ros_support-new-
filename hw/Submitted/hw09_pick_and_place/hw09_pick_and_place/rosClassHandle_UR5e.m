@@ -37,7 +37,10 @@ classdef rosClassHandle_UR5e
         pt_cloud_sub;
 
         % Yolo NN
-        general_detector;
+        basePath;
+        detPath1;
+        detPath2;
+        detectors;
 
     end
 
@@ -85,7 +88,10 @@ classdef rosClassHandle_UR5e
             r.pt_cloud_sub            = rossubscriber('/camera/depth/points','DataFormat','struct');
             
             % Yolo Neural Network
-            r.general_detector        = load("./vision_tutorials/detectors/detector_gral_sim.mat");   
+            r.basePath                = "/Users/herme/OneDrive/Documents/GitHub/matlab_ros_support-new-/tutorials"
+            r.detPath1                 = '/vision/detectors/detector_gral_sim.mat'
+            r.detPath2                 = '/vision/detectors/detector_pouch_sim.mat'
+            r.detectors        = {load( fullfile(r.basePath,r.detPath1)), load( fullfile(r.basePath,r.detPath2)) };   
         end
 
     end
