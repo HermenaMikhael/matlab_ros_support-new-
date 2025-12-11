@@ -35,6 +35,18 @@ function [start_q] = returnZoneJointConfig(zoneInspect)
     %% 'Zone 3'
     elseif strcmp(zoneInspect, "Zone3")
         start_q = [-0.4400,   -0.7014,    2.0136,   -1.3122,    0.0002,   -0.4400];
+
+    %% 'Zone 3 bottle'
+    elseif strcmp(zoneInspect, "Zone3bottle")
+        start_q = [0.2,   -.3,    2,   -1.75,    0.0002,   0];
+
+    %% 'Zone 3 bottle'
+    elseif strcmp(zoneInspect, "Zone3can")
+        start_q = [0,   -.7,    2.4,   -1.75,    0.0002,   0];
+
+    %% 'Zone 3 pouch'
+    elseif strcmp(zoneInspect, "Zone3pouch")
+        start_q = [0,   -.2,    2,   -1.75,    0.0002,   0];
     
     %% 'Zone 4'
     elseif strcmp(zoneInspect, "Zone4")

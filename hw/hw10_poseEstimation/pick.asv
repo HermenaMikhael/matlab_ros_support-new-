@@ -28,30 +28,25 @@ function grip_result = pick(strategy, objectData, optns)
     switch string(label)
         % Vertical Bottles
         case "vBottle"
-            zOffset = 0.24;
-            doGripValue = 0.51;
+            zOffset = 0.22;
+            doGripValue = 0.5;
             hoverHeight = 0.25;
        
         % Horizontal Bottles (lying down)
         case "hBottle"
-            zOffset = 0.14;
-            doGripValue = 0.29;
+            zOffset = 0.1;
+            doGripValue = 0.21;
             hoverHeight = 0.20;
        
         % Vertical Cans
-        case {"vCan"}
-            zOffset = 0.19;
+        case {"vCan", "can"}
+            zOffset = 0.18;
             doGripValue = 0.24;
             hoverHeight = 0.25;
-
-        case "can"
-            zOffset = 0.45;
-            doGripValue = 0.24;
-            hoverHeight = 0.25;
-
+       
         % Horizontal Cans
         case "hCan"
-            zOffset = 0.21;
+            zOffset = 0.10;
             doGripValue = 0.24;
             hoverHeight = 0.20;
        
@@ -68,14 +63,9 @@ function grip_result = pick(strategy, objectData, optns)
             hoverHeight = 0.25;
        
         % Pouches
-        case {"pouch", "pouchR", "pouchB", "pouchP"}
-            zOffset = 0.15;
+        case {"pouch", "pouchR", "pouchG", "pouchB", "pouchP"}
+            zOffset = 0.16;
             doGripValue = 0.62;
-            hoverHeight = 0.25;
-       
-        case "pouchG"
-            zOffset = 0.15;
-            doGripValue = 0.65;
             hoverHeight = 0.25;
        
         % Bottle
@@ -87,7 +77,7 @@ function grip_result = pick(strategy, objectData, optns)
         % Default
         otherwise
             zOffset = 0.15;
-            doGripValue = 0.63;
+            doGripValue = 0.30;
             hoverHeight = 0.25;
     end
 

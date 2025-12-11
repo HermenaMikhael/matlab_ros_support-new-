@@ -16,11 +16,27 @@ optns = startRobotWorld;
     %PickandPlaceARMChallenge('Zone2', optns);
 
 
-% Yellow zone 3, medium
-%PickandPlaceARMChallenge('Zone3', optns);
+% Red zone 4, hard
+PickandPlaceARMChallenge('Zone4', optns);
 
 % Red zone 4, hard
-%PickandPlaceARMChallenge('Zone4', optns);
+PickandPlaceARMChallenge('Zone4Pouch', optns);
+
+% Yellow zone 3, medium
+PickandPlaceARMChallenge('Zone3', optns);
+
+% Zone 3 can
+PickandPlaceARMChallenge('Zone3can', optns);
+
+% Zone 3 bottle
+PickandPlaceARMChallenge('Zone3bottle', optns);
+
+% Zone 3 pouches
+PickandPlaceARMChallenge('Zone3pouch', optns);
+
+
+
+
 
 % Blue zone 5, very hard
 %PickandPlaceARMChallenge('Zone5', optns);

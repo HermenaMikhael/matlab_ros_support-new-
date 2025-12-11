@@ -7,7 +7,7 @@ function optns = startRobotWorld(masterhostIP, nodeIP, robotName)
     if nargin == 0
         masterhostIP = "10.51.79.84";
         robotName = "UR5e";
-        nodeIP = "10.51.67.30";
+        nodeIP = "10.51.58.125";
     end
 
     % Global ROSMASTER SETUP

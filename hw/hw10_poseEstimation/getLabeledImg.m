@@ -32,21 +32,35 @@ function [bboxes, scores, labels, numObjects, myImg, annotatedImage] = getLabele
     disp("Computing bounding boxes, scores, and labels...")
 
     %% According to strategy leverage different detectors...
-    for i = 1:2
-    pretrained = r.detectors{i};
-    trainedYoloNet = pretrained.detector;
+    
+    allBboxes = [];
+    allScores = [];
+    allLabels = categorical([]);
 
-    %% TODO: Detect objects using yolo. Output bboxes, scores, labels. Threshold of 0.7
-    [bboxes,scores,labels] = detect(trainedYoloNet,myImg,Threshold=0.7);  
+    for i = 1:2
+        pretrained = r.detectors{i};
+        trainedYoloNet = pretrained.detector;
     
+    %% Detect objects using yolo. Output bboxes, scores, labels. Threshold of 0.6
+        [bboxes, scores, labels] = detect(trainedYoloNet, myImg, Threshold=0.6);
     
-    %% TODO: Visualize the detected objects' bounding boxes by calling insertObjectAnnotation and save to annotatedImage
+    %% Accumulate detections from both detectors
+        allBboxes = [allBboxes; bboxes];
+        allScores = [allScores; scores];
+        allLabels = [allLabels; labels];
+    end
+
+    % Assign final outputs
+    bboxes = allBboxes;
+    scores = allScores;
+    labels = allLabels;
+
     disp("Drawing bounding boxes...")
     annotatedImage = insertObjectAnnotation(im2uint8(myImg), ...
-                                        'Rectangle',...
-                                        bboxes,...
-                                        string(labels)+":"+string(scores),...
-                                        'Color','cyan'); %complete code here%
+    'Rectangle', ...
+    allBboxes, ...
+    string(allLabels) + ":" + string(allScores), ...
+    'Color', 'cyan');
     
     % Display
     if optns{'debug'}
@@ -55,7 +69,6 @@ function [bboxes, scores, labels, numObjects, myImg, annotatedImage] = getLabele
 
     %% Specify percentage of acceptable bounding box
     numObjects = size(bboxes,1);
-    end
 end
 
 

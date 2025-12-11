@@ -22,8 +22,9 @@ function [zoneComplete] = PickandPlaceARMChallenge(zoneInspect, optns)
     
     % Inspect the zone and get the number of subZones and joint configurations for each subZone
     [startZone] = returnZoneJointConfig(zoneInspect);
+    for i = 1:2
     % Move the robot to the inspected object's joint configuration
-    fprintf('01 Moving to zone %s at config %s...\n', zoneInspect, strjoin(string(startZone)) ); 
+    fprintf('01 Moving to zone %s at config %s...\n', zoneInspect, strjoin(string(startZone(i,:))) ); 
     moveToQ("Custom",optns,startZone);
     
     % Capture an image of the zone and detect objects
@@ -44,14 +45,16 @@ function [zoneComplete] = PickandPlaceARMChallenge(zoneInspect, optns)
     for j = 1:numObjects
         % pick
         disp('05 Beginning top-down pick from center....\n');
-        moveToQ("Custom",optns,startZone);
+        moveToQ("Custom",optns,startZone(i,:));
         pick("topdown",objectData(j,:),optns);
         
         % place
         disp('06 Beginning place....\n');
-        moveToQ("Custom",optns,startZone);
+        moveToQ("Custom",optns,startZone(i,:));
         place("topdown",objectData(j,1),optns); % label for knowing which bin to go to
+    
     end
     pause(5);
+    end
 
 end

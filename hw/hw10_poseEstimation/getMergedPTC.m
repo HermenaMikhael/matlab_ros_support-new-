@@ -30,7 +30,7 @@ function [ptCloud_pic, nonPlane_pic, ptCloud_world, base_to_cam_pose, cam_to_bas
 %       4. Crop the merged point cloud to the area corresponding to the image.
 %       5. Fit a plane in the cropped cloud and separate planar from non-planar points.
 %--------------------------------------------------------------------------
-
+   % After the transformation loop, add these checks:
     % Extract point cloud and transforms in both directions
     [ptCloud_world, ~, base_to_cam_pose, cam_to_base_pose] = messyGetPointCloud(optns);
     
